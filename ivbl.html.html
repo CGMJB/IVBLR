@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>赛事数据榜单系统</title>
+    <title>赛事数据榜单系统 - GitHub托管</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -45,15 +45,14 @@
         }
         
         .logo {
-            position: absolute;
-            left: 20px;
-            top: 30px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--success);
+            margin-bottom: 15px;
         }
         
         h1 {
@@ -354,6 +353,40 @@
             100% { transform: rotate(360deg); }
         }
         
+        .api-config {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .api-config h3 {
+            color: var(--success);
+            margin-bottom: 15px;
+        }
+        
+        .config-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .config-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .config-group label {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .save-config {
+            margin-top: 15px;
+            background: var(--warning);
+        }
+        
         @media (max-width: 768px) {
             .search-container {
                 flex-direction: column;
@@ -368,11 +401,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .logo {
-                position: relative;
-                left: 0;
-                justify-content: center;
-                margin-bottom: 15px;
+            .config-inputs {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -382,15 +412,16 @@
         <header>
             <div class="logo">
                 <i class="fas fa-trophy"></i>
-                <span>赛事通</span>
+                <span>赛事数据榜单系统</span>
             </div>
-            <h1>赛事数据榜单系统</h1>
-            <p class="subtitle">基于Notion数据库实时更新的选手与队伍赛事数据查询平台</p>
+            <h1>GitHub托管版</h1>
+            <p class="subtitle">连接Notion数据库，展示选手数据和队伍排名</p>
         </header>
         
         <div class="tabs">
             <button class="tab-btn active" data-tab="player">选手查询</button>
             <button class="tab-btn" data-tab="team">队伍排名</button>
+            <button class="tab-btn" data-tab="config">API配置</button>
         </div>
         
         <!-- 选手查询面板 -->
@@ -412,12 +443,12 @@
                 
                 <div class="loader" id="player-loader">
                     <div class="loader-spinner"></div>
-                    <p>正在从Notion数据库查询选手数据...</p>
+                    <p>正在查询选手数据...</p>
                 </div>
                 
                 <div class="player-detail" id="player-detail">
                     <div class="player-header">
-                        <div class="player-avatar" id="player-avatar">JS</div>
+                        <div class="player-avatar" id="player-avatar">ID</div>
                         <div class="player-info">
                             <h2 id="player-name">选手姓名</h2>
                             <p>选手ID: <strong id="player-id-display">PLR-000</strong></p>
@@ -470,11 +501,11 @@
                     <h2>队伍总排名</h2>
                 </div>
                 
-                <p>基于Notion数据库实时更新的队伍综合排名：</p>
+                <p>队伍综合排名数据：</p>
                 
                 <div class="loader" id="team-loader">
                     <div class="loader-spinner"></div>
-                    <p>正在从Notion数据库加载队伍排名...</p>
+                    <p>正在加载队伍排名...</p>
                 </div>
                 
                 <table id="team-ranking">
@@ -495,8 +526,47 @@
             </div>
         </div>
         
+        <!-- API配置面板 -->
+        <div class="tab-content" id="config-tab">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-cog"></i>
+                    <h2>API配置</h2>
+                </div>
+                
+                <div class="api-config">
+                    <h3>Notion API配置</h3>
+                    <p>请配置您的Notion API信息以连接数据库：</p>
+                    
+                    <div class="config-inputs">
+                        <div class="config-group">
+                            <label for="api-key">Notion API密钥</label>
+                            <input type="password" id="api-key" placeholder="输入secret_...">
+                        </div>
+                        
+                        <div class="config-group">
+                            <label for="database-id">数据库ID</label>
+                            <input type="text" id="database-id" placeholder="输入数据库ID">
+                        </div>
+                    </div>
+                    
+                    <button class="save-config" id="save-config">
+                        <i class="fas fa-save"></i> 保存配置
+                    </button>
+                    
+                    <div class="config-info" style="margin-top: 20px; background: rgba(15,23,42,0.5); padding: 15px; border-radius: 8px;">
+                        <h4>配置说明：</h4>
+                        <p>1. 在Notion中创建数据库并添加集成</p>
+                        <p>2. 获取API密钥和数据库ID</p>
+                        <p>3. 保存配置后刷新页面</p>
+                        <p>4. 配置信息将存储在浏览器本地</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="footer">
-            <p>数据来源: Notion数据库 | 实时更新 | © 2023 赛事数据榜单系统</p>
+            <p>数据来源: Notion数据库 | GitHub托管 | © 2023 赛事数据榜单系统</p>
             <div class="notion-badge">
                 <i class="fas fa-database"></i>
                 <span>Powered by Notion API</span>
@@ -523,6 +593,37 @@
             });
         });
         
+        // 保存API配置
+        document.getElementById('save-config').addEventListener('click', () => {
+            const apiKey = document.getElementById('api-key').value.trim();
+            const databaseId = document.getElementById('database-id').value.trim();
+            
+            if (!apiKey || !databaseId) {
+                alert('请填写完整的API配置信息');
+                return;
+            }
+            
+            // 保存到本地存储
+            localStorage.setItem('notionApiKey', apiKey);
+            localStorage.setItem('notionDatabaseId', databaseId);
+            
+            alert('配置已保存！请切换到其他标签页使用功能');
+        });
+        
+        // 加载保存的配置
+        function loadConfig() {
+            const apiKey = localStorage.getItem('notionApiKey');
+            const databaseId = localStorage.getItem('notionDatabaseId');
+            
+            if (apiKey) {
+                document.getElementById('api-key').value = apiKey;
+            }
+            
+            if (databaseId) {
+                document.getElementById('database-id').value = databaseId;
+            }
+        }
+        
         // 选手查询功能
         document.getElementById('search-player').addEventListener('click', () => {
             const playerId = document.getElementById('player-id').value.trim();
@@ -535,23 +636,63 @@
             document.getElementById('player-loader').style.display = 'block';
             document.getElementById('player-detail').style.display = 'none';
             
-            // 模拟API请求延迟
-            setTimeout(() => {
-                // 根据ID查询选手数据
-                const player = getPlayerData(playerId);
-                
-                // 隐藏加载动画
+            // 获取API配置
+            const apiKey = localStorage.getItem('notionApiKey');
+            const databaseId = localStorage.getItem('notionDatabaseId');
+            
+            if (!apiKey || !databaseId) {
+                alert('请先配置Notion API信息');
                 document.getElementById('player-loader').style.display = 'none';
-                
-                if (player) {
-                    // 更新UI显示选手数据
-                    displayPlayerData(player);
-                    document.getElementById('player-detail').style.display = 'block';
-                } else {
-                    alert('未找到该选手，请检查选手ID是否正确');
-                }
-            }, 1500);
+                document.querySelector('.tab-btn[data-tab="config"]').click();
+                return;
+            }
+            
+            // 实际API调用代码
+            fetchPlayerData(playerId, apiKey, databaseId);
         });
+        
+        // 实际从Notion获取选手数据的函数
+        function fetchPlayerData(playerId, apiKey, databaseId) {
+            // 这里应该是实际的API调用代码
+            // 示例结构：
+            /*
+            fetch('https://api.notion.com/v1/databases/' + databaseId + '/query', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + apiKey,
+                    'Notion-Version': '2022-06-28',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    filter: {
+                        property: "ID",
+                        rich_text: {
+                            equals: playerId
+                        }
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 处理数据
+                const player = processPlayerData(data);
+                displayPlayerData(player);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('查询失败，请检查配置和网络');
+            })
+            .finally(() => {
+                document.getElementById('player-loader').style.display = 'none';
+            });
+            */
+            
+            // 由于没有实际API，这里模拟一个延迟
+            setTimeout(() => {
+                document.getElementById('player-loader').style.display = 'none';
+                alert('实际环境中，这里会调用Notion API获取数据。\n\n请配置您的API信息后实现此功能。');
+            }, 1500);
+        }
         
         // 加载队伍排名
         function loadTeamRanking() {
@@ -559,119 +700,59 @@
             document.getElementById('team-loader').style.display = 'block';
             document.querySelector('#team-ranking tbody').innerHTML = '';
             
-            // 模拟API请求延迟
-            setTimeout(() => {
-                const teams = getTeamRankingData();
-                
-                // 隐藏加载动画
+            // 获取API配置
+            const apiKey = localStorage.getItem('notionApiKey');
+            const databaseId = localStorage.getItem('notionDatabaseId');
+            
+            if (!apiKey || !databaseId) {
                 document.getElementById('team-loader').style.display = 'none';
-                
-                // 更新队伍排名表格
-                const tbody = document.querySelector('#team-ranking tbody');
-                teams.forEach((team, index) => {
-                    const tr = document.createElement('tr');
-                    
-                    let rankBadge = '';
-                    if (index === 0) rankBadge = '<span class="medal gold">🥇</span>';
-                    else if (index === 1) rankBadge = '<span class="medal silver">🥈</span>';
-                    else if (index === 2) rankBadge = '<span class="medal bronze">🥉</span>';
-                    
-                    tr.innerHTML = `
-                        <td>${rankBadge} ${index + 1}</td>
-                        <td><div class="team-logo">${team.name.substr(0,2)}</div> ${team.name}</td>
-                        <td>${team.totalScore}</td>
-                        <td>${team.matches}</td>
-                        <td>${team.avgScore.toFixed(1)}</td>
-                        <td>${team.winRate}%</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }, 2000);
+                alert('请先配置Notion API信息');
+                document.querySelector('.tab-btn[data-tab="config"]').click();
+                return;
+            }
+            
+            // 实际API调用代码
+            fetchTeamRanking(apiKey, databaseId);
         }
         
-        // 模拟从Notion获取选手数据
-        function getPlayerData(playerId) {
-            // 实际实现中这里会调用Notion API
-            // 下面是模拟数据
-            const players = [
-                {
-                    id: "PLR-001",
-                    name: "张明",
-                    team: "雷霆战队",
-                    totalScore: 2450,
-                    matches: 28,
-                    winRate: 78,
-                    avgScore: 87.5,
-                    performance: [
-                        { event: "春季锦标赛", score: 92, rank: 1, date: "2023-05-15" },
-                        { event: "城市邀请赛", score: 85, rank: 3, date: "2023-04-22" },
-                        { event: "新星挑战赛", score: 89, rank: 2, date: "2023-03-30" },
-                        { event: "周末联赛", score: 91, rank: 1, date: "2023-03-12" }
-                    ]
+        // 实际从Notion获取队伍排名的函数
+        function fetchTeamRanking(apiKey, databaseId) {
+            // 这里应该是实际的API调用代码
+            // 示例结构：
+            /*
+            fetch('https://api.notion.com/v1/databases/' + databaseId + '/query', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + apiKey,
+                    'Notion-Version': '2022-06-28',
+                    'Content-Type': 'application/json'
                 },
-                {
-                    id: "PLR-002",
-                    name: "李华",
-                    team: "飓风战队",
-                    totalScore: 2105,
-                    matches: 25,
-                    winRate: 72,
-                    avgScore: 84.2,
-                    performance: [
-                        { event: "春季锦标赛", score: 88, rank: 2, date: "2023-05-15" },
-                        { event: "城市邀请赛", score: 82, rank: 5, date: "2023-04-22" },
-                        { event: "新星挑战赛", score: 79, rank: 7, date: "2023-03-30" },
-                        { event: "周末联赛", score: 85, rank: 3, date: "2023-03-12" }
-                    ]
-                },
-                {
-                    id: "PLR-003",
-                    name: "王芳",
-                    team: "凤凰战队",
-                    totalScore: 2310,
-                    matches: 26,
-                    winRate: 81,
-                    avgScore: 88.8,
-                    performance: [
-                        { event: "春季锦标赛", score: 90, rank: 3, date: "2023-05-15" },
-                        { event: "城市邀请赛", score: 91, rank: 1, date: "2023-04-22" },
-                        { event: "新星挑战赛", score: 84, rank: 4, date: "2023-03-30" },
-                        { event: "周末联赛", score: 87, rank: 2, date: "2023-03-12" }
-                    ]
-                },
-                {
-                    id: "PLR-004",
-                    name: "陈强",
-                    team: "龙之队",
-                    totalScore: 2250,
-                    matches: 27,
-                    winRate: 75,
-                    avgScore: 83.3,
-                    performance: [
-                        { event: "春季锦标赛", score: 85, rank: 5, date: "2023-05-15" },
-                        { event: "城市邀请赛", score: 88, rank: 4, date: "2023-04-22" },
-                        { event: "新星挑战赛", score: 90, rank: 3, date: "2023-03-30" },
-                        { event: "周末联赛", score: 80, rank: 6, date: "2023-03-12" }
-                    ]
-                },
-                {
-                    id: "PLR-005",
-                    name: "刘洋",
-                    team: "勇士联盟",
-                    totalScore: 2180,
-                    matches: 25,
-                    winRate: 80,
-                    avgScore: 87.2,
-                    performance: [
-                        { event: "春季锦标赛", score: 87, rank: 4, date: "2023-05-15" },
-                        { event: "城市邀请赛", score: 90, rank: 2, date: "2023-04-22" },
-                        { event: "新星挑战赛", score: 82, rank: 5, date: "2023-03-30" },
-                        { event: "周末联赛", score: 86, rank: 4, date: "2023-03-12" }
-                    ]
-                }
-            ];
+                body: JSON.stringify({
+                    sorts: [{
+                        property: "TotalScore",
+                        direction: "descending"
+                    }]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const teams = processTeamData(data);
+                displayTeamRanking(teams);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('加载队伍排名失败');
+            })
+            .finally(() => {
+                document.getElementById('team-loader').style.display = 'none';
+            });
+            */
             
-            return players.find(player => player.id === playerId);
+            // 由于没有实际API，这里模拟一个延迟
+            setTimeout(() => {
+                document.getElementById('team-loader').style.display = 'none';
+                alert('实际环境中，这里会调用Notion API获取队伍排名数据。\n\n请配置您的API信息后实现此功能。');
+            }, 2000);
         }
         
         // 显示选手数据
@@ -699,28 +780,43 @@
                 `;
                 tbody.appendChild(tr);
             });
+            
+            document.getElementById('player-detail').style.display = 'block';
         }
         
-        // 模拟从Notion获取队伍排名数据
-        function getTeamRankingData() {
-            // 实际实现中这里会调用Notion API
-            // 下面是模拟数据
-            return [
-                { name: "雷霆战队", totalScore: 9850, matches: 112, avgScore: 88.0, winRate: 82 },
-                { name: "凤凰战队", totalScore: 9450, matches: 110, avgScore: 85.9, winRate: 79 },
-                { name: "飓风战队", totalScore: 9200, matches: 115, avgScore: 80.0, winRate: 76 },
-                { name: "龙之队", totalScore: 8750, matches: 105, avgScore: 83.3, winRate: 75 },
-                { name: "勇士联盟", totalScore: 8450, matches: 100, avgScore: 84.5, winRate: 78 },
-                { name: "星火战队", totalScore: 8200, matches: 108, avgScore: 75.9, winRate: 70 },
-                { name: "巅峰竞技", totalScore: 7950, matches: 98, avgScore: 81.1, winRate: 72 },
-                { name: "荣耀之师", totalScore: 7650, matches: 102, avgScore: 75.0, winRate: 68 }
-            ];
+        // 显示队伍排名
+        function displayTeamRanking(teams) {
+            const tbody = document.querySelector('#team-ranking tbody');
+            tbody.innerHTML = '';
+            
+            teams.forEach((team, index) => {
+                const tr = document.createElement('tr');
+                
+                let rankBadge = '';
+                if (index === 0) rankBadge = '<span class="medal gold">🥇</span>';
+                else if (index === 1) rankBadge = '<span class="medal silver">🥈</span>';
+                else if (index === 2) rankBadge = '<span class="medal bronze">🥉</span>';
+                
+                tr.innerHTML = `
+                    <td>${rankBadge} ${index + 1}</td>
+                    <td><div class="team-logo">${team.name.substr(0,2)}</div> ${team.name}</td>
+                    <td>${team.totalScore}</td>
+                    <td>${team.matches}</td>
+                    <td>${team.avgScore.toFixed(1)}</td>
+                    <td>${team.winRate}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
         
         // 初始化页面
         document.addEventListener('DOMContentLoaded', () => {
+            // 加载保存的配置
+            loadConfig();
+            
             // 默认显示队伍排名数据
-            loadTeamRanking();
+            // 实际使用中取消注释下面这行
+            // loadTeamRanking();
         });
     </script>
 </body>
